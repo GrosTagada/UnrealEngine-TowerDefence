@@ -1,0 +1,94 @@
+# ==========================================
+# Unreal Engine
+# ==========================================
+
+# Generated folders
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+
+# Unreal Engine IDE files
+.vs/
+.vscode/
+
+# Visual Studio
+*.sln
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Unreal generated project files
+*.VC.db
+*.VC.opendb
+
+# ==========================================
+# Rider / JetBrains
+# ==========================================
+
+.idea/
+*.sln.iml
+*.user
+*.DotSettings.user
+
+# Rider generated files
+.rider/
+*.sln.DotSettings
+
+# ==========================================
+# Build / Packaging
+# ==========================================
+
+Build/
+Releases/
+
+# ==========================================
+# Logs / Temporary files
+# ==========================================
+
+*.log
+*.tmp
+*.temp
+
+# ==========================================
+# OS files
+# ==========================================
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+
+# Linux
+*~
+
+# ==========================================
+# Unreal specific
+# ==========================================
+
+# Autosaves
+Saved/Autosaves/
+
+# Crash reports
+Saved/Crashes/
+
+# Logs
+Saved/Logs/
+
+# Profiling
+Saved/Profiling/
+
+# Staged builds
+Saved/StagedBuilds/
+
+# ==========================================
+# Rider / ReSharper
+# ==========================================
+
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
