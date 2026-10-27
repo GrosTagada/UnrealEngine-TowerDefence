@@ -2,8 +2,10 @@
 
 
 #include "TowerDefensePlayerController.h"
+
 #include "Engine/LocalPlayer.h"
 #include "DrawDebugHelpers.h"
+#include "Kismet/GameplayStatics.h"
 
 void ATowerDefensePlayerController::BeginPlay()
 {
@@ -21,6 +23,14 @@ void ATowerDefensePlayerController::BeginPlay()
 				InputSubsystem->AddMappingContext(InputMappingContext, 0);
 			}
 		}
+	}
+	
+	PathManager = Cast<APathManager>(UGameplayStatics::GetActorOfClass(GetWorld(),APathManager::StaticClass()));
+
+	if (!IsValid(PathManager))
+	{
+		UE_LOG(LogTemp, Error, TEXT("PathManager not found in the level"));
+		return;
 	}
 }
 
@@ -44,19 +54,11 @@ void ATowerDefensePlayerController::OnPossess(APawn* InPawn)
 
 void ATowerDefensePlayerController::OnLeftClick()
 {
-	if (GEngine)
-		GEngine->AddOnScreenDebugMessage(-1,10.0f,FColor::Blue,TEXT("Left mouse click"));
-	
 	if (!GroundChannel)
 		return;
 	
 	FHitResult HitResult;
 	GetHitResultUnderCursorByChannel(GroundChannel,false,HitResult);
 	
-	if (GEngine)
-		GEngine->AddOnScreenDebugMessage(-1,10.0f,FColor::Emerald,FString::Printf(TEXT("Hit point : %s"),*HitResult.ImpactPoint.ToString()));
-	
-	UWorld* World = GetWorld();
-	if (World)
-		DrawDebugLine(World,HitResult.TraceStart,HitResult.TraceEnd,FColor::Red,true,-1.0f,0,2.0f);
+	PathManager->TrySelectCell(HitResult.ImpactPoint);
 }

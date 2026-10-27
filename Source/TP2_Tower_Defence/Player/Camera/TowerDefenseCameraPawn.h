@@ -5,7 +5,6 @@
 #include "Camera/CameraComponent.h"
 #include "Components/SceneComponent.h"
 
-
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "TowerDefenseCameraPawn.generated.h"
@@ -14,7 +13,6 @@ UCLASS()
 class TP2_TOWER_DEFENCE_API ATowerDefenseCameraPawn : public APawn
 {
 	GENERATED_BODY()
-
 public:
 	// Sets default values for this pawn's properties
 	ATowerDefenseCameraPawn();

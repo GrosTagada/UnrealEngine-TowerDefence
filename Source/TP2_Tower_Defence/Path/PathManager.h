@@ -19,6 +19,8 @@ class TP2_TOWER_DEFENCE_API APathManager : public AActor
 	FIntPoint EndCoordinate;
 	
 	TArray<FIntPoint> PathCoordinates;
+	
+	bool bIsPathEditBlocked = false;
 public:
 	// Sets default values for this actor's properties
 	APathManager();
@@ -26,10 +28,16 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
+	bool IsCellNextToCell(FIntPoint CellToTest,FIntPoint CellNext);
+	bool CompletePath();
 
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
 	void DrawDebugPath();
+	void TrySelectCell(FVector WorldPosition);
+	
+	void DrawDebugCell(FIntPoint CellCoordinate);
 };

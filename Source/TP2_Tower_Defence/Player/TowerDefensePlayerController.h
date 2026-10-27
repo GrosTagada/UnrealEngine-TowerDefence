@@ -7,6 +7,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
 #include "InputAction.h"
+#include "TP2_Tower_Defence/Path/PathManager.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
@@ -27,6 +28,9 @@ class TP2_TOWER_DEFENCE_API ATowerDefensePlayerController : public APlayerContro
 	
 	UPROPERTY(EditAnywhere, Category = "RayTrace")
 	TEnumAsByte<ETraceTypeQuery>GroundChannel;
+	
+	UPROPERTY()
+	TObjectPtr<APathManager> PathManager;
 	
 protected:
 	virtual void BeginPlay() override;
