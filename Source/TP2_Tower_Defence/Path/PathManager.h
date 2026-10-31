@@ -40,4 +40,7 @@ public:
 	void TrySelectCell(FVector WorldPosition);
 	
 	void DrawDebugCell(FIntPoint CellCoordinate);
+	
+	TArray<FIntPoint> GetPathCoordinates() {return PathCoordinates;}
+	UGridComponent* GetGridComponent() {return GridTerrain->GetGridComponent();};
 };

@@ -3,6 +3,7 @@
 
 #include "PathManager.h"
 #include "DrawDebugHelpers.h"
+#include "TP2_Tower_Defence/GameModes/TowerDefenceGameMode.h"
 
 // Sets default values
 APathManager::APathManager()
@@ -184,6 +185,10 @@ void APathManager::TrySelectCell(FVector WorldPosition)
 		//Show some UI
 		if (GEngine)
 			GEngine->AddOnScreenDebugMessage(-1,10.0f,FColor::Emerald,TEXT("Path completed"));
+		
+		UWorld* World = GetWorld();
+		if (ATowerDefenceGameMode* GameMode = Cast<ATowerDefenceGameMode>(World->GetAuthGameMode()))
+			GameMode->OnPathCompleted();
 		return;
 	}
 	
