@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DataAssets/EnemyDataAsset.h"
 #include "GameFramework/Pawn.h"
 #include "TP2_Tower_Defence/Path/PathManager.h"
 #include "Enemy.generated.h"
@@ -46,5 +47,5 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
-	void InitializeEnemy(const TArray<FIntPoint>& InPathCoordinates, UGridComponent* InGridComponent);
+	void InitializeEnemy(const TArray<FIntPoint>& InPathCoordinates, UGridComponent* InGridComponent, UEnemyDataAsset* DataAsset);
 };

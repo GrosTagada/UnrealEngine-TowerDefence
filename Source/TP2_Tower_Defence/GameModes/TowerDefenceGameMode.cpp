@@ -47,10 +47,15 @@ void ATowerDefenceGameMode::OnEndOfPreparation() const
 
 void ATowerDefenceGameMode::OnEndOfWave() const
 {
+	if (GEngine)
+		GEngine->AddOnScreenDebugMessage(-1,10.0f,FColor::Emerald,TEXT("End of wave"));
+	
 	if (!TowerDefenceGameState)
 		return;
 	
 	TowerDefenceGameState->SetGamePhase(EGamePhase::Preparation);
+	
+	StartWave();
 }
 
 void ATowerDefenceGameMode::OnEndOfGame() const

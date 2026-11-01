@@ -64,10 +64,13 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
-void AEnemy::InitializeEnemy(const TArray<FIntPoint>& InPathCoordinates, UGridComponent* InGridComponent)
+void AEnemy::InitializeEnemy(const TArray<FIntPoint>& InPathCoordinates, UGridComponent* InGridComponent,UEnemyDataAsset* DataAsset)
 {
 	PathCoordinates = InPathCoordinates;
 	
 	GridComponent = InGridComponent;
+	
+	if (DataAsset->EnemyStaticMesh)
+		Mesh->SetStaticMesh(DataAsset->EnemyStaticMesh.LoadSynchronous());
 }
 
