@@ -7,6 +7,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "TP2_Tower_Defence/Ressources/ResourceManagerComponent.h"
 #include "TP2_Tower_Defence/Tower/DataAssets/TowerDataAsset.h"
 #include "BuildingPlacementManager.generated.h"
 
@@ -35,6 +36,9 @@ protected:
 	TObjectPtr<APathManager> PathManager;
 	
 	UPROPERTY()
+	TObjectPtr<UResourceManagerComponent> ResourceManager;
+	
+	UPROPERTY()
 	TObjectPtr<UTowerDataAsset> SelectedTowerData;
 
 	FIntPoint HoveredCoordinates = FIntPoint(-1, -1);
@@ -55,7 +59,7 @@ protected:
 
 	bool CanPlaceTower(const FIntPoint& Coordinates) const;
 
-	void PlaceTower(const FIntPoint& Coordinates);
+	ATower* PlaceTower(const FIntPoint& Coordinates);
 	void CreatePreview();
 	void UpdatePreviewMaterial();
 };

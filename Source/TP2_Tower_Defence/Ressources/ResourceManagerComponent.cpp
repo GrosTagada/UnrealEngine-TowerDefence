@@ -1,36 +1,51 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+﻿#include "ResourceManagerComponent.h"
 
-
-#include "ResourceManagerComponent.h"
-
-
-// Sets default values for this component's properties
 UResourceManagerComponent::UResourceManagerComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
-
-// Called when the game starts
 void UResourceManagerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	
+	CurrentResources = StartingResources;
+
+	OnResourcesChanged.Broadcast(CurrentResources);
 }
 
-
-// Called every frame
-void UResourceManagerComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-                                              FActorComponentTickFunction* ThisTickFunction)
+bool UResourceManagerComponent::CanAfford(int32 Amount) const
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
+	return Amount > 0 && CurrentResources >= Amount;
 }
 
+bool UResourceManagerComponent::TrySpendResources(int32 Amount)
+{
+	if (!CanAfford(Amount))
+	{
+		return false;
+	}
+
+	CurrentResources -= Amount;
+
+	OnResourcesChanged.Broadcast(CurrentResources);
+
+	return true;
+}
+
+void UResourceManagerComponent::AddResources(int32 Amount)
+{
+	if (Amount <= 0)
+	{
+		return;
+	}
+
+	CurrentResources += Amount;
+
+	OnResourcesChanged.Broadcast(CurrentResources);
+}
+
+int32 UResourceManagerComponent::GetCurrentResources() const
+{
+	return CurrentResources;
+}

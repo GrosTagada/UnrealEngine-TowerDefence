@@ -17,16 +17,17 @@ public:
 	UHealthComponent();
 
 	void ApplyDamage(float Damage);
+	
+	void InitializeHealth(float MaxHealth);
+	
+	UPROPERTY(BlueprintAssignable, Category = "Health")
+	FOnDeath OnDeath;
 
 protected:
-	UPROPERTY(EditAnywhere, Category = "Health")
-	float MaxHealth = 100.0f;
+	float DefaultMaxHealth = 100.0f;
 
 	UPROPERTY(VisibleAnywhere, Category = "Health")
 	float CurrentHealth;
-
-	UPROPERTY(BlueprintAssignable, Category = "Health")
-	FOnDeath OnDeath;
 	
 	virtual void BeginPlay() override;
 };

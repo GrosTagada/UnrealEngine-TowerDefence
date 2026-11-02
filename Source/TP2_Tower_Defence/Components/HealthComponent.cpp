@@ -29,9 +29,12 @@ void UHealthComponent::ApplyDamage(float Damage)
 	}
 }
 
+void UHealthComponent::InitializeHealth(float MaxHealth)
+{
+	CurrentHealth = MaxHealth;
+}
+
 void UHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	CurrentHealth = MaxHealth;
 }

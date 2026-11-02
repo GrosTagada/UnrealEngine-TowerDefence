@@ -1,6 +1,7 @@
 ﻿#include "BuildingPlacementManager.h"
 
 #include "Engine/World.h"
+#include "TP2_Tower_Defence/GameModes/TowerDefenceGameMode.h"
 
 
 UBuildingPlacementManager::UBuildingPlacementManager()
@@ -12,6 +13,13 @@ void UBuildingPlacementManager::InitializePlacement(UGridComponent* InGridCompon
 {
     GridComponent = InGridComponent;
     PathManager = InPathManager;
+    
+    ATowerDefenceGameMode* GameMode = GetWorld()->GetAuthGameMode<ATowerDefenceGameMode>();
+
+    if (IsValid(GameMode))
+    {
+        ResourceManager = GameMode->GetResourceManager();
+    }
 }
 
 void UBuildingPlacementManager::SelectTower(UTowerDataAsset* TowerData)
@@ -66,7 +74,13 @@ void UBuildingPlacementManager::UpdatePlacementPreview(const FVector& WorldPosit
 
 bool UBuildingPlacementManager::CanPlaceTower(const FIntPoint& Coordinates) const
 {
-    return IsValid(GridComponent)&& GridComponent->CanBuildAt(Coordinates);
+    if (!IsValid(SelectedTowerData) ||!IsValid(GridComponent) ||!IsValid(ResourceManager))
+        return false;
+
+    if (!ResourceManager->CanAfford(SelectedTowerData->BuildCost))
+        return false;
+    
+    return GridComponent->CanBuildAt(Coordinates);
 }
 
 void UBuildingPlacementManager::ConfirmPlacement()
@@ -75,15 +89,28 @@ void UBuildingPlacementManager::ConfirmPlacement()
     {
         return;
     }
+    
+    if (!IsValid(ResourceManager) ||!IsValid(SelectedTowerData))
+        return;
 
-    PlaceTower(HoveredCoordinates);
+    const int32 Cost = SelectedTowerData->BuildCost;
+
+    if (!ResourceManager->CanAfford(Cost))
+        return;
+
+    ATower* SpawnedTower = PlaceTower(HoveredCoordinates);
+    
+    if (!IsValid(SpawnedTower))
+        return;
+    
+    ResourceManager->TrySpendResources(Cost);
 }
 
-void UBuildingPlacementManager::PlaceTower(const FIntPoint& Coordinates)
+ATower* UBuildingPlacementManager::PlaceTower(const FIntPoint& Coordinates)
 {
     if (!CanPlaceTower(Coordinates))
     {
-        return;
+        return nullptr;
     }
 
     FVector SpawnPosition = GridComponent->GridToWorld(Coordinates);
@@ -96,12 +123,14 @@ void UBuildingPlacementManager::PlaceTower(const FIntPoint& Coordinates)
 
     if (!IsValid(Tower))
     {
-        return;
+        return nullptr;
     }
     
     Tower->InitializeTower(SelectedTowerData);
     
     GridComponent->SetCellOccupied(Coordinates, true);
+    
+    return Tower;
 }
 
 void UBuildingPlacementManager::CreatePreview()

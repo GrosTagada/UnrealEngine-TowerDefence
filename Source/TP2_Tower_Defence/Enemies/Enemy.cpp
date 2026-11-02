@@ -3,6 +3,9 @@
 
 #include "Enemy.h"
 
+#include "TP2_Tower_Defence/GameModes/TowerDefenceGameMode.h"
+#include "TP2_Tower_Defence/Ressources/ResourceManagerComponent.h"
+
 
 // Sets default values
 AEnemy::AEnemy()
@@ -21,6 +24,7 @@ void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	HealthComponent->OnDeath.AddDynamic(this,&AEnemy::HandleDeath);
 }
 
 // Called every frame
@@ -67,7 +71,42 @@ void AEnemy::InitializeEnemy(const TArray<FIntPoint>& InPathCoordinates, UGridCo
 	
 	GridComponent = InGridComponent;
 	
+	EnemyData = DataAsset;
+	
 	if (DataAsset->EnemyStaticMesh)
 		Mesh->SetStaticMesh(DataAsset->EnemyStaticMesh.LoadSynchronous());
+	
+	if (DataAsset->Life)
+		HealthComponent->InitializeHealth(DataAsset->Life);
 }
 
+void AEnemy::GiveReward()
+{
+	ATowerDefenceGameMode* GameMode = GetWorld()->GetAuthGameMode<ATowerDefenceGameMode>();
+
+	if (!IsValid(GameMode))
+		return;
+
+	UResourceManagerComponent* ResourceManager =GameMode->GetResourceManager();
+
+	if (!IsValid(ResourceManager))
+		return;
+
+	if (!IsValid(EnemyData))
+		return;
+
+	ResourceManager->AddResources(EnemyData->Reward);
+}
+
+void AEnemy::HandleDeath()
+{
+	if (bRewardGiven)
+	{
+		return;
+	}
+
+	bRewardGiven = true;
+
+	GiveReward();
+	
+}

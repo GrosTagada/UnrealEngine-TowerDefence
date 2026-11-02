@@ -134,7 +134,7 @@ void AWaveManager::SpawnNextEnemy()
 
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
-	AEnemy* Enemy = GetWorld()->SpawnActor<AEnemy>(EnemyClass,SpawnPosition,FRotator::ZeroRotator,SpawnParameters);
+	AEnemy* Enemy = GetWorld()->SpawnActor<AEnemy>(EnemyData->EnemyClass.Get(),SpawnPosition,FRotator::ZeroRotator,SpawnParameters);
 
 	if (IsValid(Enemy))
 	{

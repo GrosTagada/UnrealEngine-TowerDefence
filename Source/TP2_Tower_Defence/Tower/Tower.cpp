@@ -72,9 +72,6 @@ void ATower::FindTarget()
 		{
 			ClosestDistance = DistanceSquared;
 			CurrentTarget = Enemy;
-			
-			if (GEngine)
-				GEngine->AddOnScreenDebugMessage(-1,10.0f,FColor::Cyan,TEXT("Target found"));
 		}
 	}
 }

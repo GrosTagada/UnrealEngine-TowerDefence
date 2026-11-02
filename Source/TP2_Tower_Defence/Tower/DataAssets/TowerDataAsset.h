@@ -24,4 +24,7 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Tower")
 	float AttackInterval = 1.0f;
+	
+	UPROPERTY(EditAnywhere, Category = "Tower")
+	float BuildCost = 10.0f;
 };

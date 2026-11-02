@@ -9,6 +9,7 @@
 #include "TP2_Tower_Defence/Path/PathManager.h"
 #include "Enemy.generated.h"
 
+class UEnemyDataAsset;
 UCLASS()
 class TP2_TOWER_DEFENCE_API AEnemy : public APawn
 {
@@ -26,6 +27,10 @@ class TP2_TOWER_DEFENCE_API AEnemy : public APawn
 	float ArrivalDistance = 5.0f;
 	
 	UGridComponent* GridComponent;
+	
+	UEnemyDataAsset* EnemyData;
+	
+	bool bRewardGiven = false;
 	
 public:
 	// Sets default values for this pawn's properties
@@ -49,6 +54,10 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	
 	void InitializeEnemy(const TArray<FIntPoint>& InPathCoordinates, UGridComponent* InGridComponent, UEnemyDataAsset* DataAsset);
+	void GiveReward();
 	
+	UFUNCTION()
+	void HandleDeath();
+
 	UHealthComponent* GetHealthComponent() const {return HealthComponent;}
 };
