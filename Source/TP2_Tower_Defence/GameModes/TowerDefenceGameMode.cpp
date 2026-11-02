@@ -33,8 +33,6 @@ void ATowerDefenceGameMode::OnPathCompleted() const
 		return;
 	
 	TowerDefenceGameState->SetGamePhase(EGamePhase::Preparation);
-	
-	StartWave();
 }
 
 void ATowerDefenceGameMode::OnEndOfPreparation() const

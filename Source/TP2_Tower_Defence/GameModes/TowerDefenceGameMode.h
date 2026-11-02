@@ -28,5 +28,6 @@ public:
 	void OnEndOfWave() const;
 	void OnEndOfGame() const;
 	
+	UFUNCTION(BlueprintCallable)
 	void StartWave() const;
 };

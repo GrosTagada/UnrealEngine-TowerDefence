@@ -1,6 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
+#include "TP2_Tower_Defence/Components/HealthComponent.h"
 
 #include "CoreMinimal.h"
 #include "DataAssets/EnemyDataAsset.h"
@@ -39,13 +40,15 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UStaticMeshComponent> Mesh;
+	
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	TObjectPtr<UHealthComponent> HealthComponent;
 
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
 	void InitializeEnemy(const TArray<FIntPoint>& InPathCoordinates, UGridComponent* InGridComponent, UEnemyDataAsset* DataAsset);
+	
+	UHealthComponent* GetHealthComponent() const {return HealthComponent;}
 };

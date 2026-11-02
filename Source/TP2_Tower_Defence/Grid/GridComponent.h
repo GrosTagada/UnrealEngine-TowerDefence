@@ -45,6 +45,7 @@ public:
 	int GetCellCount() const { return Cells.Num();}
 	
 	void DrawDebugGrid() const;
+	bool CanBuildAt(const FIntPoint& Coordinates) const;
 
 protected:
 	// Called when the game starts

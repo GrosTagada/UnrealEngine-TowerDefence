@@ -6,6 +6,13 @@
 #include "Engine/LocalPlayer.h"
 #include "DrawDebugHelpers.h"
 #include "Kismet/GameplayStatics.h"
+#include "TP2_Tower_Defence/GameStates/TowerDefenceGameState.h"
+#include "TP2_Tower_Defence/GameStates/Enum/EGamePhase.h"
+
+ATowerDefensePlayerController::ATowerDefensePlayerController()
+{
+	BuildingPlacementManager = CreateDefaultSubobject<UBuildingPlacementManager>(TEXT("BuildingPlacementManager"));
+}
 
 void ATowerDefensePlayerController::BeginPlay()
 {
@@ -31,6 +38,11 @@ void ATowerDefensePlayerController::BeginPlay()
 	{
 		UE_LOG(LogTemp, Error, TEXT("PathManager not found in the level"));
 		return;
+	}
+	
+	if (IsValid(PathManager))
+	{
+		BuildingPlacementManager->InitializePlacement(PathManager->GetGridComponent(),PathManager);
 	}
 }
 
@@ -60,5 +72,48 @@ void ATowerDefensePlayerController::OnLeftClick()
 	FHitResult HitResult;
 	GetHitResultUnderCursorByChannel(GroundChannel,false,HitResult);
 	
-	PathManager->TrySelectCell(HitResult.ImpactPoint);
+	ATowerDefenceGameState* GameState = GetWorld()->GetGameState<ATowerDefenceGameState>();
+
+	if (!IsValid(GameState))
+	{
+		return;
+	}
+	
+	if (GameState->GetGamePhase() == EGamePhase::Preparation)
+		ConfirmTowerPlacement();
+	if (GameState->GetGamePhase() == EGamePhase::PathSelection)
+		PathManager->TrySelectCell(HitResult.ImpactPoint);
+}
+
+void ATowerDefensePlayerController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if (!BuildingPlacementManager)
+	{
+		return;
+	}
+
+	FHitResult HitResult;
+
+	if (GetHitResultUnderCursorByChannel(GroundChannel,false,HitResult))
+	{
+		BuildingPlacementManager->UpdatePlacementPreview(HitResult.Location);
+	}
+}
+
+void ATowerDefensePlayerController::SelectTower(UTowerDataAsset* TowerDataAsset)
+{
+	BuildingPlacementManager->SelectTower(TowerDataAsset);
+}
+
+void ATowerDefensePlayerController::ConfirmTowerPlacement()
+{
+	ATowerDefenceGameState* GameState = GetWorld()->GetGameState<ATowerDefenceGameState>();
+
+	if (!IsValid(GameState) || GameState->GetGamePhase() != EGamePhase::Preparation)
+	{
+		return;
+	}
+	BuildingPlacementManager->ConfirmPlacement();
 }

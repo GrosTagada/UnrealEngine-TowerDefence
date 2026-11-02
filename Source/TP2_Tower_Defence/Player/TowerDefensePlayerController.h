@@ -11,6 +11,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "TP2_Tower_Defence/Placement Manager/BuildingPlacementManager.h"
+#include "TP2_Tower_Defence/Tower/DataAssets/TowerDataAsset.h"
 #include "TowerDefensePlayerController.generated.h"
 
 /**
@@ -31,12 +33,23 @@ class TP2_TOWER_DEFENCE_API ATowerDefensePlayerController : public APlayerContro
 	
 	UPROPERTY()
 	TObjectPtr<APathManager> PathManager;
+
 	
 protected:
+	ATowerDefensePlayerController();
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
 	virtual void OnPossess(APawn* InPawn) override;
 	
 	void OnLeftClick();
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	TObjectPtr<UBuildingPlacementManager> BuildingPlacementManager;
 	
+public:
+	virtual void Tick(float DeltaTime) override;
+	
+	UFUNCTION(BlueprintCallable)
+	void SelectTower(UTowerDataAsset* TowerDataAsset);
+	void ConfirmTowerPlacement();
 };

@@ -12,6 +12,8 @@ AEnemy::AEnemy()
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(Root);
+	
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
 }
 
 // Called when the game starts or when spawned
@@ -58,11 +60,6 @@ void AEnemy::Tick(float DeltaTime)
 	}
 }
 
-// Called to bind functionality to input
-void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-}
 
 void AEnemy::InitializeEnemy(const TArray<FIntPoint>& InPathCoordinates, UGridComponent* InGridComponent,UEnemyDataAsset* DataAsset)
 {

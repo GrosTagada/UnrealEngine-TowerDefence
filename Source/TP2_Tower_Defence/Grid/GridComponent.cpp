@@ -152,6 +152,26 @@ void UGridComponent::DrawDebugGrid() const
     }
 }
 
+bool UGridComponent::CanBuildAt(const FIntPoint& Coordinates) const
+{
+    if (!IsValidCoordinate(Coordinates.X,Coordinates.Y))
+    {
+        return false;
+    }
+
+    const FGridCell* Cell = GetCell(
+        Coordinates.X,
+        Coordinates.Y
+    );
+
+    if (!Cell)
+    {
+        return false;
+    }
+
+    return !Cell->bIsOccupied;
+}
+
 void UGridComponent::BeginPlay()
 {
     Super::BeginPlay();
